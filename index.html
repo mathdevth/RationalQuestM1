@@ -22,20 +22,19 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Prompt', sans-serif; }
         body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
         
-        /* Utility Classes */
         .hidden { display: none !important; }
         .text-center { text-align: center; }
         .mt-4 { margin-top: 1rem; }
-        .mb-4 { margin-bottom: 1rem; }
         
         /* Auth Screen */
         #auth-screen {
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
             background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 2rem;
         }
         .auth-card {
-            background: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px;
+            background: rgba(255, 255, 255, 0.95); padding: 2.5rem; border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 450px;
             backdrop-filter: blur(10px);
         }
         .auth-card h1 { color: var(--primary); font-size: 2rem; margin-bottom: 1.5rem; text-align: center; }
@@ -55,7 +54,10 @@
             box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
         }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6); }
-        .toggle-auth { color: var(--primary); text-align: center; margin-top: 1rem; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none !important; }
+        .toggle-auth { color: var(--primary); text-align: center; margin-top: 1rem; cursor: pointer; font-size: 0.9rem; text-decoration: underline; font-weight: 600; }
+        
+        .friend-box { background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1px dashed #cbd5e0; margin-top: 0.5rem; }
         
         /* Main Layout */
         header {
@@ -84,23 +86,34 @@
         
         /* Quest Detail Screen */
         #quest-detail-screen { padding: 2rem; max-width: 900px; margin: 0 auto; }
-        .quest-header { background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 1.5rem; text-align: center; }
+        .quest-header { background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 2.5rem; text-align: center; }
         
         /* Progress Steps */
-        .progress-steps { display: flex; justify-content: space-between; position: relative; margin: 2rem 0; }
+        .progress-steps { display: flex; justify-content: space-between; position: relative; margin: 2rem 0; padding: 0 1rem; }
         .progress-steps::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background: #e2e8f0; transform: translateY(-50%); z-index: 1; }
         .step {
+            position: relative; /* แก้ไขเรื่องตัวหนังสือซ้อนกัน */
             width: 40px; height: 40px; background: #e2e8f0; border-radius: 50%; display: flex;
             justify-content: center; align-items: center; z-index: 2; color: white; font-weight: bold;
             transition: all 0.3s; cursor: not-allowed;
         }
-        .step.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); cursor: pointer; transform: scale(1.1); }
+        .step.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); transform: scale(1.1); }
         .step.completed { background: var(--success); cursor: pointer; }
-        .step-label { position: absolute; top: 45px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: var(--text-light); white-space: nowrap; }
+        .step.completed:hover { transform: scale(1.1); }
+        
+        .step-label { 
+            position: absolute; 
+            top: 50px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            font-size: 0.85rem; 
+            color: var(--text-light); 
+            white-space: nowrap; 
+        }
         .step.active .step-label, .step.completed .step-label { color: var(--primary); font-weight: 600; }
         
         /* Content Box */
-        .content-box { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        .content-box { background: white; padding: 2.5rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
         
         /* Options */
         .options-grid { display: grid; gap: 1rem; margin-top: 1.5rem; }
@@ -108,7 +121,7 @@
             background: white; color: var(--text-main); border: 2px solid #e2e8f0; padding: 1rem;
             border-radius: 10px; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; text-align: left; width: 100%;
         }
-        .btn-option:hover { background: #f3e5f5; border-color: #ab47bc; transform: translateX(5px); }
+        .btn-option:hover { background: #f3e5f5; border-color: var(--primary); transform: translateX(5px); }
         .btn-option.correct { background: var(--success); color: white; border-color: var(--success); }
         .btn-option.wrong { background: var(--danger); color: white; border-color: var(--danger); }
         
@@ -118,7 +131,7 @@
 </head>
 <body>
 
-    <!-- Auth Screen (Login & Register) -->
+    <!-- Auth Screen -->
     <div id="auth-screen">
         <div class="auth-card" id="login-card">
             <h1>เข้าสู่ระบบ 🎮</h1>
@@ -130,10 +143,7 @@
                 <label>รหัสผ่าน</label>
                 <input type="password" id="login-password" class="form-control" placeholder="รหัสผ่านของคุณ">
             </div>
-            <div class="form-group">
-                <label><input type="checkbox" id="use-mock" checked> ใช้ระบบจำลอง (ทดสอบออฟไลน์)</label>
-            </div>
-            <button class="btn btn-primary" onclick="app.login()">เริ่มผจญภัย!</button>
+            <button class="btn btn-primary" id="login-btn" onclick="app.login()">เริ่มผจญภัย!</button>
             <div class="toggle-auth" onclick="app.toggleAuthMode('register')">ยังไม่มีบัญชีใช่ไหม? ลงทะเบียนเลย</div>
         </div>
 
@@ -141,10 +151,10 @@
             <h1>ลงทะเบียน 📝</h1>
             <div class="form-group">
                 <label>รหัสนักเรียน</label>
-                <input type="text" id="reg-id" class="form-control" placeholder="รหัสนักเรียน 5 หลัก">
+                <input type="text" id="reg-id" class="form-control" placeholder="รหัสนักเรียน 5 หลัก (ของคุณ)">
             </div>
             <div class="form-group">
-                <label>ชื่อ-นามสกุล (จริง)</label>
+                <label>ชื่อ-นามสกุล</label>
                 <input type="text" id="reg-name" class="form-control" placeholder="ด.ช. / ด.ญ. ...">
             </div>
             <div class="form-group">
@@ -160,9 +170,27 @@
             </div>
             <div class="form-group">
                 <label>รหัสผ่าน</label>
-                <input type="password" id="reg-password" class="form-control" placeholder="ตั้งรหัสผ่าน">
+                <input type="password" id="reg-password" class="form-control" placeholder="ตั้งรหัสผ่าน 4-6 หลัก">
             </div>
-            <button class="btn btn-primary" onclick="app.register()">สร้างตัวละคร</button>
+            
+            <!-- ระบบเพิ่มเพื่อน -->
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label style="color: var(--primary); cursor: pointer;">
+                    <input type="checkbox" id="add-friend-toggle" onchange="app.toggleFriendForm()"> 👫 ทำภารกิจคู่กับเพื่อน (เครื่องเดียวกัน)
+                </label>
+            </div>
+            <div id="friend-form" class="friend-box hidden">
+                <div class="form-group">
+                    <label>ชื่อ-นามสกุล (เพื่อน)</label>
+                    <input type="text" id="reg-friend-name" class="form-control" placeholder="ด.ช. / ด.ญ. (เพื่อน)">
+                </div>
+                <div class="form-group">
+                    <label>เลขที่ (เพื่อน)</label>
+                    <input type="number" id="reg-friend-number" class="form-control" min="1" max="50">
+                </div>
+            </div>
+
+            <button class="btn btn-primary mt-4" id="reg-btn" onclick="app.register()">สร้างตัวละคร</button>
             <div class="toggle-auth" onclick="app.toggleAuthMode('login')">มีบัญชีแล้ว? เข้าสู่ระบบ</div>
         </div>
     </div>
@@ -170,7 +198,7 @@
     <!-- Main Header -->
     <header id="main-header" class="hidden">
         <div class="user-info">
-            <h2><i class="fa-solid fa-user-astronaut" style="color: var(--primary);"></i> <span id="display-name">นักเรียน</span></h2>
+            <h2><i class="fa-solid fa-user-astronaut" style="color: var(--primary);"></i> <span id="display-name" style="font-size: 1.2rem;">นักเรียน</span></h2>
         </div>
         <div class="user-info">
             <div class="xp-badge"><i class="fa-solid fa-star"></i> <span id="display-xp">0</span> XP</div>
@@ -209,9 +237,12 @@
     </div>
 
     <script>
-        // --- DATA CONFIGURATION ---
+        // ==========================================
+        // ⚠️ นำ Web app URL จาก Google Apps Script มาใส่ที่นี่ ⚠️
+        // ==========================================
         const API_URL = 'https://script.google.com/macros/s/AKfycby939tqELFJnbNrODEg7i2ULTPVzQpYGWFkC7wKim74PB3NMpNd1KWbwfgXWlf2XiNESg/exec'; 
-
+        
+        // ข้อมูลหลักสูตร 12 ด่าน
         const MAP_NODES = [
             { id: 'm1', title: '1. เศษส่วนและการเปรียบเทียบ', icon: 'fa-chart-pie', req: [] },
             { id: 'm2', title: '2. การบวกและการลบเศษส่วน', icon: 'fa-plus-minus', req: ['m1'] },
@@ -227,19 +258,27 @@
             { id: 'm12', title: '12. การวางแผนลดค่าไฟฟ้า', icon: 'fa-bolt', req: ['m11'] }
         ];
 
+        // เนื้อหาบทเรียน
         const MODULE_CONTENT = {
             'm1': [
-                { type: 'text', title: 'ขั้นที่ 1: สังเกต (Specialising)', content: 'ยินดีต้อนรับสู่โลกเศษส่วน! ให้นักเรียนสังเกตพิซซ่า 2 ถาด ถาดแรกแบ่ง 4 ชิ้น กินไป 2 ชิ้น เขียนได้ว่า $$ \\frac{2}{4} $$ ถาดที่สองแบ่ง 2 ชิ้น กินไป 1 ชิ้น เขียนได้ว่า $$ \\frac{1}{2} $$ ลองวาดภาพในใจว่าปริมาณพิซซ่าที่กินไปเท่ากันหรือไม่?' },
-                { type: 'text', title: 'ขั้นที่ 2: สรุปหลักการ (Generalising)', content: 'จากข้อสังเกต เราสรุปได้ว่า เศษส่วนที่หน้าตาต่างกันอาจมีค่าเท่ากันได้เรียกว่า "เศษส่วนที่เท่ากัน" และถ้าเราจะเปรียบเทียบเศษส่วน เช่น $$ \\frac{2}{5} $$ กับ $$ \\frac{3}{5} $$ ถ้า "ส่วนเท่ากัน" เราสามารถเทียบตัวเศษด้านบนได้เลย!' },
-                { type: 'quiz', title: 'ขั้นที่ 3: คาดการณ์ (Conjecturing)', content: 'ถ้านักเรียนต้องเปรียบเทียบ $$ \\frac{3}{4} $$ กับ $$ \\frac{5}{6} $$ ซึ่ง "ตัวส่วนไม่เท่ากัน" นักเรียนคาดว่าจะใช้วิธีใดเพื่อทำให้เปรียบเทียบกันได้อย่างแม่นยำ?', 
+                { type: 'text', title: 'ขั้นที่ 1: สังเกต (Specialising)', content: 'ยินดีต้อนรับสู่โลกเศษส่วน! ให้นักเรียนสังเกตพิซซ่า 2 ถาด ถาดแรกแบ่ง 4 ชิ้น กินไป 2 ชิ้น เขียนได้ว่า $$ \frac{2}{4} $$ ถาดที่สองแบ่ง 2 ชิ้น กินไป 1 ชิ้น เขียนได้ว่า $$ \frac{1}{2} $$ ลองวาดภาพในใจว่าปริมาณพิซซ่าที่กินไปเท่ากันหรือไม่?' },
+                { type: 'text', title: 'ขั้นที่ 2: สรุปหลักการ (Generalising)', content: 'จากข้อสังเกต เราสรุปได้ว่า เศษส่วนที่หน้าตาต่างกันอาจมีค่าเท่ากันได้เรียกว่า "เศษส่วนที่เท่ากัน" และถ้าเราจะเปรียบเทียบเศษส่วน เช่น $$ \frac{2}{5} $$ กับ $$ \frac{3}{5} $$ ถ้า "ส่วนเท่ากัน" เราสามารถเทียบตัวเศษด้านบนได้เลย!' },
+                { type: 'quiz', title: 'ขั้นที่ 3: คาดการณ์ (Conjecturing)', content: 'ถ้านักเรียนต้องเปรียบเทียบ $$ \frac{3}{4} $$ กับ $$ \frac{5}{6} $$ ซึ่ง "ตัวส่วนไม่เท่ากัน" นักเรียนคาดว่าจะใช้วิธีใดเพื่อทำให้เปรียบเทียบกันได้อย่างแม่นยำ?', 
                   options: ['ทำตัวเศษให้เท่ากัน', 'ทำตัวส่วนให้เท่ากันโดยหา ค.ร.น.', 'นำมาบวกกันก่อน'], answer: 1 },
-                { type: 'quiz', title: 'ขั้นที่ 4: พิสูจน์ให้เห็นจริง (Convincing)', content: 'จงเปรียบเทียบ $$ \\frac{2}{3} $$ กับ $$ \\frac{3}{5} $$ ข้อใดถูกต้อง?', 
-                  options: ['$$ \\frac{2}{3} > \\frac{3}{5} $$', '$$ \\frac{2}{3} < \\frac{3}{5} $$', '$$ \\frac{2}{3} = \\frac{3}{5} $$'], answer: 0 }
+                { type: 'quiz', title: 'ขั้นที่ 4: พิสูจน์ให้เห็นจริง (Convincing)', content: 'จงเปรียบเทียบ $$ \frac{2}{3} $$ กับ $$ \frac{3}{5} $$ ข้อใดถูกต้อง?', 
+                  options: ['$$ \frac{2}{3} > \frac{3}{5} $$', '$$ \frac{2}{3} < \frac{3}{5} $$', '$$ \frac{2}{3} = \frac{3}{5} $$'], answer: 0 }
+            ],
+            'm10': [
+                { type: 'text', title: 'ขั้นที่ 1: สังเกต (Specialising)', content: 'ในซูเปอร์มาร์เก็ต เนื้อหมูราคา 150.50 บาท/กก. ถ้าเราซื้อ 1.2 กก. เราจะเสียเงินเท่าไหร่? สังเกตว่าเราต้องนำ 150.50 มาคูณกับ 1.2' },
+                { type: 'text', title: 'ขั้นที่ 2: สรุปหลักการ (Generalising)', content: 'การแก้โจทย์ปัญหาทศนิยมในชีวิตจริง ต้องเริ่มจากการ "วิเคราะห์โจทย์" ว่าต้องการหาอะไร จากนั้น "วางแผน" ว่าจะใช้การบวก ลบ คูณ หรือหาร แล้วจึง "ลงมือทำ"' },
+                { type: 'quiz', title: 'ขั้นที่ 3: คาดการณ์ (Conjecturing)', content: 'ถ้าซื้อของราคา 35.75 บาท และ 12.50 บาท โดยให้แบงก์ 100 บาท คาดการณ์ว่าเงินทอนจะมากกว่าหรือน้อยกว่า 50 บาท?', 
+                  options: ['มากกว่า 50 บาท', 'น้อยกว่า 50 บาท', 'เท่ากับ 50 บาทพอดี'], answer: 0 },
+                { type: 'quiz', title: 'ขั้นที่ 4: พิสูจน์ให้เห็นจริง (Convincing)', content: 'รถยนต์คันหนึ่งเติมน้ำมัน 30.5 ลิตร ราคาลิตรละ 35.20 บาท จะต้องจ่ายเงินกี่บาท?', 
+                  options: ['1,073.60 บาท', '1,050.50 บาท', '980.20 บาท'], answer: 0 }
             ]
-            // Add full modules here... (Kept brief for code generation success, exact logic remains identical to previous iterations)
         };
         
-        // Fill remaining modules with placeholders to prevent crashes
+        // เติม Placeholder ให้ด่านที่เหลือเพื่อป้องกันระบบพัง
         for(let i=2; i<=12; i++) {
             if(!MODULE_CONTENT['m'+i]) {
                 MODULE_CONTENT['m'+i] = [
@@ -256,7 +295,6 @@
             currentUser: null,
             currentQuest: null,
             currentStep: 0,
-            db: JSON.parse(localStorage.getItem('rationalDB')) || {},
 
             init() {
                 if(localStorage.getItem('activeUser')) {
@@ -270,6 +308,16 @@
                 document.getElementById('register-card').classList.toggle('hidden', mode === 'login');
             },
 
+            toggleFriendForm() {
+                const isChecked = document.getElementById('add-friend-toggle').checked;
+                const form = document.getElementById('friend-form');
+                if(isChecked) {
+                    form.classList.remove('hidden');
+                } else {
+                    form.classList.add('hidden');
+                }
+            },
+
             async register() {
                 const id = document.getElementById('reg-id').value;
                 const name = document.getElementById('reg-name').value;
@@ -277,53 +325,75 @@
                 const num = document.getElementById('reg-number').value;
                 const pass = document.getElementById('reg-password').value;
 
-                if(!id || !name || !num || !pass) return alert('กรุณากรอกข้อมูลให้ครบ');
+                if(!id || !name || !num || !pass) return alert('กรุณากรอกข้อมูลส่วนตัวของคุณให้ครบถ้วน');
                 
-                if(document.getElementById('use-mock').checked) {
-                    if(this.db[id]) return alert('รหัสนักเรียนนี้ลงทะเบียนแล้ว');
-                    this.db[id] = { password: pass, name: `${name} (${room} เลขที่ ${num})`, xp: 0, progress: {} };
-                    localStorage.setItem('rationalDB', JSON.stringify(this.db));
-                    alert('ลงทะเบียนสำเร็จ! กรุณาเข้าสู่ระบบ');
-                    this.toggleAuthMode('login');
-                } else {
-                    try {
-                        const res = await fetch(API_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'register', studentId: id, password: pass, realName: name, classRoom: room, studentNumber: num })
-                        });
-                        const result = await res.json();
-                        if(result.success) { alert('ลงทะเบียนสำเร็จ!'); this.toggleAuthMode('login'); }
-                        else alert('เกิดข้อผิดพลาด: ' + result.error);
-                    } catch(e) { alert('API Error'); }
+                // จัดการเรื่องเพิ่มเพื่อน
+                const hasFriend = document.getElementById('add-friend-toggle').checked;
+                let finalName = name;
+                let finalNum = num;
+
+                if(hasFriend) {
+                    const fName = document.getElementById('reg-friend-name').value;
+                    const fNum = document.getElementById('reg-friend-number').value;
+                    if(!fName || !fNum) return alert('คุณเลือกเพิ่มเพื่อน กรุณากรอกข้อมูลเพื่อนให้ครบด้วยครับ');
+                    
+                    // รวมชื่อและเลขที่เข้าด้วยกัน ส่งไปฐานข้อมูลทีเดียว
+                    finalName = `${name} และ ${fName}`;
+                    finalNum = `${num}, ${fNum}`;
                 }
+
+                const btn = document.getElementById('reg-btn');
+                btn.innerText = 'กำลังลงทะเบียน...';
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'register', studentId: id, password: pass, realName: finalName, classRoom: room, studentNumber: finalNum })
+                    });
+                    const result = await res.json();
+                    if(result.success) { 
+                        alert('ลงทะเบียนสำเร็จ! กรุณาเข้าสู่ระบบ'); 
+                        this.toggleAuthMode('login'); 
+                    } else {
+                        alert('เกิดข้อผิดพลาด: ' + result.error);
+                    }
+                } catch(e) { 
+                    alert('ไม่สามารถเชื่อมต่อฐานข้อมูลได้ โปรดตรวจสอบ API_URL หรือสัญญาณอินเทอร์เน็ต'); 
+                }
+                
+                btn.innerText = 'สร้างตัวละคร';
+                btn.disabled = false;
             },
 
             async login() {
                 const id = document.getElementById('login-id').value;
                 const pass = document.getElementById('login-password').value;
-                if(!id || !pass) return alert('กรอกข้อมูลให้ครบ');
+                if(!id || !pass) return alert('กรอกรหัสนักเรียนและรหัสผ่านให้ครบถ้วน');
 
-                if(document.getElementById('use-mock').checked) {
-                    const user = this.db[id];
-                    if(user && user.password === pass) {
-                        this.currentUser = { id, ...user };
+                const btn = document.getElementById('login-btn');
+                btn.innerText = 'กำลังโหลดข้อมูล...';
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'login', studentId: id, password: pass })
+                    });
+                    const result = await res.json();
+                    if(result.success) {
+                        this.currentUser = { id, ...result.data };
                         localStorage.setItem('activeUser', JSON.stringify(this.currentUser));
                         this.showMap();
-                    } else alert('รหัสผ่านหรือรหัสนักเรียนไม่ถูกต้อง');
-                } else {
-                    try {
-                        const res = await fetch(API_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'login', studentId: id, password: pass })
-                        });
-                        const result = await res.json();
-                        if(result.success) {
-                            this.currentUser = { id, ...result.data };
-                            localStorage.setItem('activeUser', JSON.stringify(this.currentUser));
-                            this.showMap();
-                        } else alert(result.error);
-                    } catch(e) { alert('API Error'); }
+                    } else {
+                        alert(result.error);
+                    }
+                } catch(e) { 
+                    alert('ไม่สามารถเชื่อมต่อฐานข้อมูลได้ โปรดตรวจสอบ API_URL หรือสัญญาณอินเทอร์เน็ต'); 
                 }
+
+                btn.innerText = 'เริ่มผจญภัย!';
+                btn.disabled = false;
             },
 
             logout() {
@@ -333,6 +403,10 @@
                 document.getElementById('main-header').classList.add('hidden');
                 document.getElementById('map-screen').classList.add('hidden');
                 document.getElementById('quest-detail-screen').classList.add('hidden');
+                
+                // Reset inputs
+                document.getElementById('login-id').value = '';
+                document.getElementById('login-password').value = '';
             },
 
             showMap() {
@@ -371,7 +445,6 @@
                 if(isLocked) return;
                 this.currentQuest = id;
                 this.currentStep = this.currentUser.progress[id] || 0;
-                // Cap to max available step (4 steps = max index 3)
                 if(this.currentStep > 3) this.currentStep = 3; 
                 
                 document.getElementById('map-screen').classList.add('hidden');
@@ -450,25 +523,20 @@
             async nextStep(isFromQuiz = false) {
                 const maxAllowed = this.currentUser.progress[this.currentQuest] || 0;
                 
-                // If it's a new progression
+                // อัปเดตความก้าวหน้าเมื่อเล่นผ่านด่านใหม่
                 if(this.currentStep === maxAllowed) {
                     this.currentUser.progress[this.currentQuest] = maxAllowed + 1;
                     
-                    // Award XP only for new progress
                     if(isFromQuiz) this.currentUser.xp += 50;
                     else this.currentUser.xp += 20;
                     
-                    // Sync Data
                     localStorage.setItem('activeUser', JSON.stringify(this.currentUser));
-                    if(document.getElementById('use-mock').checked) {
-                        this.db[this.currentUser.id] = this.currentUser;
-                        localStorage.setItem('rationalDB', JSON.stringify(this.db));
-                    } else {
-                        fetch(API_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({ action: 'updateProgress', studentId: this.currentUser.id, progress: this.currentUser.progress, xp: this.currentUser.xp })
-                        });
-                    }
+                    
+                    // บันทึกลง Google Sheet เงียบๆ ในเบื้องหลัง
+                    fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'updateProgress', studentId: this.currentUser.id, progress: this.currentUser.progress, xp: this.currentUser.xp })
+                    }).catch(e => console.log("Background save error:", e));
                 }
 
                 if(this.currentStep < 3) {
