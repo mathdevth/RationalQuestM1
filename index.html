@@ -92,7 +92,7 @@
         .progress-steps { display: flex; justify-content: space-between; position: relative; margin: 2rem 0; padding: 0 1rem; }
         .progress-steps::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background: #e2e8f0; transform: translateY(-50%); z-index: 1; }
         .step {
-            position: relative; /* แก้ไขเรื่องตัวหนังสือซ้อนกัน */
+            position: relative;
             width: 40px; height: 40px; background: #e2e8f0; border-radius: 50%; display: flex;
             justify-content: center; align-items: center; z-index: 2; color: white; font-weight: bold;
             transition: all 0.3s; cursor: not-allowed;
@@ -162,6 +162,14 @@
                 <select id="reg-room" class="form-control">
                     <option value="ม.1/1">ม.1/1</option>
                     <option value="ม.1/2">ม.1/2</option>
+                    <option value="ม.1/3">ม.1/3</option>
+                    <option value="ม.1/4">ม.1/4</option>
+                    <option value="ม.1/5">ม.1/5</option>
+                    <option value="ม.1/6">ม.1/6</option>
+                    <option value="ม.1/7">ม.1/7</option>
+                    <option value="ม.1/8">ม.1/8</option>
+                    <option value="ม.1/9">ม.1/9</option>
+                    <option value="ม.1/10">ม.1/10</option>
                 </select>
             </div>
             <div class="form-group">
@@ -183,6 +191,21 @@
                 <div class="form-group">
                     <label>ชื่อ-นามสกุล (เพื่อน)</label>
                     <input type="text" id="reg-friend-name" class="form-control" placeholder="ด.ช. / ด.ญ. (เพื่อน)">
+                </div>
+                <div class="form-group">
+                    <label>ชั้นเรียน (เพื่อน)</label>
+                    <select id="reg-friend-room" class="form-control">
+                        <option value="ม.1/1">ม.1/1</option>
+                        <option value="ม.1/2">ม.1/2</option>
+                        <option value="ม.1/3">ม.1/3</option>
+                        <option value="ม.1/4">ม.1/4</option>
+                        <option value="ม.1/5">ม.1/5</option>
+                        <option value="ม.1/6">ม.1/6</option>
+                        <option value="ม.1/7">ม.1/7</option>
+                        <option value="ม.1/8">ม.1/8</option>
+                        <option value="ม.1/9">ม.1/9</option>
+                        <option value="ม.1/10">ม.1/10</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>เลขที่ (เพื่อน)</label>
@@ -238,7 +261,7 @@
 
     <script>
         // ==========================================
-        // ⚠️ นำ Web app URL จาก Google Apps Script มาใส่ที่นี่ ⚠️
+        // เชื่อมต่อ Google Apps Script เรียบร้อยแล้ว
         // ==========================================
         const API_URL = 'https://script.google.com/macros/s/AKfycby939tqELFJnbNrODEg7i2ULTPVzQpYGWFkC7wKim74PB3NMpNd1KWbwfgXWlf2XiNESg/exec'; 
         
@@ -261,12 +284,12 @@
         // เนื้อหาบทเรียน
         const MODULE_CONTENT = {
             'm1': [
-                { type: 'text', title: 'ขั้นที่ 1: สังเกต (Specialising)', content: 'ยินดีต้อนรับสู่โลกเศษส่วน! ให้นักเรียนสังเกตพิซซ่า 2 ถาด ถาดแรกแบ่ง 4 ชิ้น กินไป 2 ชิ้น เขียนได้ว่า $$ \frac{2}{4} $$ ถาดที่สองแบ่ง 2 ชิ้น กินไป 1 ชิ้น เขียนได้ว่า $$ \frac{1}{2} $$ ลองวาดภาพในใจว่าปริมาณพิซซ่าที่กินไปเท่ากันหรือไม่?' },
-                { type: 'text', title: 'ขั้นที่ 2: สรุปหลักการ (Generalising)', content: 'จากข้อสังเกต เราสรุปได้ว่า เศษส่วนที่หน้าตาต่างกันอาจมีค่าเท่ากันได้เรียกว่า "เศษส่วนที่เท่ากัน" และถ้าเราจะเปรียบเทียบเศษส่วน เช่น $$ \frac{2}{5} $$ กับ $$ \frac{3}{5} $$ ถ้า "ส่วนเท่ากัน" เราสามารถเทียบตัวเศษด้านบนได้เลย!' },
-                { type: 'quiz', title: 'ขั้นที่ 3: คาดการณ์ (Conjecturing)', content: 'ถ้านักเรียนต้องเปรียบเทียบ $$ \frac{3}{4} $$ กับ $$ \frac{5}{6} $$ ซึ่ง "ตัวส่วนไม่เท่ากัน" นักเรียนคาดว่าจะใช้วิธีใดเพื่อทำให้เปรียบเทียบกันได้อย่างแม่นยำ?', 
+                { type: 'text', title: 'ขั้นที่ 1: สังเกต (Specialising)', content: 'ยินดีต้อนรับสู่โลกเศษส่วน! ให้นักเรียนสังเกตพิซซ่า 2 ถาด ถาดแรกแบ่ง 4 ชิ้น กินไป 2 ชิ้น เขียนได้ว่า $$ \\frac{2}{4} $$ ถาดที่สองแบ่ง 2 ชิ้น กินไป 1 ชิ้น เขียนได้ว่า $$ \\frac{1}{2} $$ ลองวาดภาพในใจว่าปริมาณพิซซ่าที่กินไปเท่ากันหรือไม่?' },
+                { type: 'text', title: 'ขั้นที่ 2: สรุปหลักการ (Generalising)', content: 'จากข้อสังเกต เราสรุปได้ว่า เศษส่วนที่หน้าตาต่างกันอาจมีค่าเท่ากันได้เรียกว่า "เศษส่วนที่เท่ากัน" และถ้าเราจะเปรียบเทียบเศษส่วน เช่น $$ \\frac{2}{5} $$ กับ $$ \\frac{3}{5} $$ ถ้า "ส่วนเท่ากัน" เราสามารถเทียบตัวเศษด้านบนได้เลย!' },
+                { type: 'quiz', title: 'ขั้นที่ 3: คาดการณ์ (Conjecturing)', content: 'ถ้านักเรียนต้องเปรียบเทียบ $$ \\frac{3}{4} $$ กับ $$ \\frac{5}{6} $$ ซึ่ง "ตัวส่วนไม่เท่ากัน" นักเรียนคาดว่าจะใช้วิธีใดเพื่อทำให้เปรียบเทียบกันได้อย่างแม่นยำ?', 
                   options: ['ทำตัวเศษให้เท่ากัน', 'ทำตัวส่วนให้เท่ากันโดยหา ค.ร.น.', 'นำมาบวกกันก่อน'], answer: 1 },
-                { type: 'quiz', title: 'ขั้นที่ 4: พิสูจน์ให้เห็นจริง (Convincing)', content: 'จงเปรียบเทียบ $$ \frac{2}{3} $$ กับ $$ \frac{3}{5} $$ ข้อใดถูกต้อง?', 
-                  options: ['$$ \frac{2}{3} > \frac{3}{5} $$', '$$ \frac{2}{3} < \frac{3}{5} $$', '$$ \frac{2}{3} = \frac{3}{5} $$'], answer: 0 }
+                { type: 'quiz', title: 'ขั้นที่ 4: พิสูจน์ให้เห็นจริง (Convincing)', content: 'จงเปรียบเทียบ $$ \\frac{2}{3} $$ กับ $$ \\frac{3}{5} $$ ข้อใดถูกต้อง?', 
+                  options: ['$$ \\frac{2}{3} > \\frac{3}{5} $$', '$$ \\frac{2}{3} < \\frac{3}{5} $$', '$$ \\frac{2}{3} = \\frac{3}{5} $$'], answer: 0 }
             ],
             'm10': [
                 { type: 'text', title: 'ขั้นที่ 1: สังเกต (Specialising)', content: 'ในซูเปอร์มาร์เก็ต เนื้อหมูราคา 150.50 บาท/กก. ถ้าเราซื้อ 1.2 กก. เราจะเสียเงินเท่าไหร่? สังเกตว่าเราต้องนำ 150.50 มาคูณกับ 1.2' },
@@ -331,15 +354,18 @@
                 const hasFriend = document.getElementById('add-friend-toggle').checked;
                 let finalName = name;
                 let finalNum = num;
+                let finalRoom = room;
 
                 if(hasFriend) {
                     const fName = document.getElementById('reg-friend-name').value;
+                    const fRoom = document.getElementById('reg-friend-room').value;
                     const fNum = document.getElementById('reg-friend-number').value;
                     if(!fName || !fNum) return alert('คุณเลือกเพิ่มเพื่อน กรุณากรอกข้อมูลเพื่อนให้ครบด้วยครับ');
                     
-                    // รวมชื่อและเลขที่เข้าด้วยกัน ส่งไปฐานข้อมูลทีเดียว
+                    // รวมชื่อและชั้นเรียน/เลขที่เข้าด้วยกัน ส่งไปฐานข้อมูลทีเดียว
                     finalName = `${name} และ ${fName}`;
-                    finalNum = `${num}, ${fNum}`;
+                    finalRoom = room === fRoom ? room : `${room} และ ${fRoom}`;
+                    finalNum = `${num} และ ${fNum}`;
                 }
 
                 const btn = document.getElementById('reg-btn');
@@ -349,7 +375,7 @@
                 try {
                     const res = await fetch(API_URL, {
                         method: 'POST',
-                        body: JSON.stringify({ action: 'register', studentId: id, password: pass, realName: finalName, classRoom: room, studentNumber: finalNum })
+                        body: JSON.stringify({ action: 'register', studentId: id, password: pass, realName: finalName, classRoom: finalRoom, studentNumber: finalNum })
                     });
                     const result = await res.json();
                     if(result.success) { 
@@ -359,7 +385,7 @@
                         alert('เกิดข้อผิดพลาด: ' + result.error);
                     }
                 } catch(e) { 
-                    alert('ไม่สามารถเชื่อมต่อฐานข้อมูลได้ โปรดตรวจสอบ API_URL หรือสัญญาณอินเทอร์เน็ต'); 
+                    alert('ไม่สามารถเชื่อมต่อฐานข้อมูลได้ โปรดตรวจสอบสัญญาณอินเทอร์เน็ต'); 
                 }
                 
                 btn.innerText = 'สร้างตัวละคร';
@@ -389,7 +415,7 @@
                         alert(result.error);
                     }
                 } catch(e) { 
-                    alert('ไม่สามารถเชื่อมต่อฐานข้อมูลได้ โปรดตรวจสอบ API_URL หรือสัญญาณอินเทอร์เน็ต'); 
+                    alert('ไม่สามารถเชื่อมต่อฐานข้อมูลได้ โปรดตรวจสอบสัญญาณอินเทอร์เน็ต'); 
                 }
 
                 btn.innerText = 'เริ่มผจญภัย!';
